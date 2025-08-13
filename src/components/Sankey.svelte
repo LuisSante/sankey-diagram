@@ -5,6 +5,42 @@
 	let svgElement;
 	let data = null;
 
+	function exportAsSVG() {
+		if (!svgElement) {
+			alert('No hay diagrama para exportar');
+			return;
+		}
+
+		try {
+			const svgClone = svgElement.cloneNode(true);
+
+			svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+			svgClone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+
+			const styleElement = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+			svgClone.insertBefore(styleElement, svgClone.firstChild);
+
+			const svgData = new XMLSerializer().serializeToString(svgClone);
+
+			const blob = new Blob([svgData], { type: 'image/svg+xml' });
+			const url = URL.createObjectURL(blob);
+
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = 'sankey_diagram.svg';
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+
+			URL.revokeObjectURL(url);
+
+			console.log('SVG exportado exitosamente');
+		} catch (error) {
+			console.error('Error al exportar SVG:', error);
+			alert('Error al exportar el SVG');
+		}
+	}
+
 	function createSankey(data) {
 		if (!data || !svgElement) return;
 
@@ -24,11 +60,9 @@
 
 		const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-		// Procesar datos y agrupar países con valores < 11 en "Others"
 		const processedNodes = new Map();
 		const processedLinks = [];
 
-		// Inicializar todos los nodos
 		data.nodes.forEach((node) => {
 			processedNodes.set(node.id, {
 				...node,
@@ -40,7 +74,6 @@
 			});
 		});
 
-		// Calcular valores totales por nodo
 		data.links.forEach((link) => {
 			const sourceNode = processedNodes.get(link.source);
 			const targetNode = processedNodes.get(link.target);
@@ -51,7 +84,6 @@
 			}
 		});
 
-		// Identificar países que van a "Others"
 		const othersSourceCountries = new Set();
 		const othersTargetCountries = new Set();
 
@@ -64,7 +96,6 @@
 			}
 		});
 
-		// Crear nodos Others
 		if (othersSourceCountries.size > 0) {
 			processedNodes.set('Others_source', {
 				id: 'Others_source',
@@ -89,22 +120,18 @@
 			});
 		}
 
-		// Procesar enlaces y agrupar en Others
 		data.links.forEach((link) => {
 			let sourceId = link.source;
 			let targetId = link.target;
 
-			// Si el source va a Others
 			if (othersSourceCountries.has(link.source)) {
 				sourceId = 'Others_source';
 			}
 
-			// Si el target va a Others
 			if (othersTargetCountries.has(link.target)) {
 				targetId = 'Others_target';
 			}
 
-			// Buscar si ya existe un enlace combinado
 			const existingLinkIndex = processedLinks.findIndex(
 				(l) => l.source === sourceId && l.target === targetId
 			);
@@ -120,7 +147,6 @@
 			}
 		});
 
-		// Recalcular valores después del agrupamiento
 		processedNodes.forEach((node) => {
 			node.outValue = 0;
 			node.inValue = 0;
@@ -138,7 +164,6 @@
 			}
 		});
 
-		// Filtrar nodos que no tienen flujos
 		const activeNodes = Array.from(processedNodes.values()).filter(
 			(node) => node.outValue > 0 || node.inValue > 0
 		);
@@ -149,7 +174,6 @@
 			node.totalValue = Math.max(node.outValue, node.inValue, 1);
 		});
 
-		// Crear nodos source y target separados
 		const sourceNodes = activeNodes
 			.filter((n) => n.outValue > 0)
 			.map((n) => ({
@@ -176,7 +200,6 @@
 		console.log(`Nodos activos destino: ${targetNodes.length}`);
 		console.log(`Enlaces procesados: ${processedLinks.length}`);
 
-		// Ordenar con Others al final
 		sourceNodes.sort((a, b) => {
 			if (a.name === 'Others') return 1;
 			if (b.name === 'Others') return -1;
@@ -190,14 +213,13 @@
 		});
 
 		const nodeWidth = 15;
-		const nodePadding = 5;
+		const nodePadding = 15;
 		const sourceTotal = d3.sum(sourceNodes, (d) => d.value);
 		const targetTotal = d3.sum(targetNodes, (d) => d.value);
 
 		const sourceScale = (innerHeight - (sourceNodes.length - 1) * nodePadding) / sourceTotal;
 		const targetScale = (innerHeight - (targetNodes.length - 1) * nodePadding) / targetTotal;
 
-		// Posicionar nodos source
 		let y = 0;
 		sourceNodes.forEach((node) => {
 			node.x0 = 0;
@@ -208,7 +230,6 @@
 			y = node.y1 + nodePadding;
 		});
 
-		// Posicionar nodos target
 		y = 0;
 		targetNodes.forEach((node) => {
 			node.x0 = innerWidth - nodeWidth;
@@ -221,7 +242,6 @@
 
 		const allNodes = [...sourceNodes, ...targetNodes];
 
-		// Crear escala de colores con Others al final en gris
 		const allCountries = [...new Set(activeNodes.map((d) => d.name))].sort();
 		const othersIndex = allCountries.indexOf('Others');
 		if (othersIndex > -1) {
@@ -291,17 +311,14 @@
 				return '';
 			}
 
-			// Calcular altura del enlace proporcional al valor y al tamaño del nodo
 			const sourceNodeHeight = sourceNode.y1 - sourceNode.y0;
 			const targetNodeHeight = targetNode.y1 - targetNode.y0;
 
-			// La altura del enlace debe ser proporcional al valor dentro del nodo
 			const sourceLinkHeight = (link.value / sourceNode.displayValue) * sourceNodeHeight;
 			const targetLinkHeight = (link.value / targetNode.displayValue) * targetNodeHeight;
 
 			const linkHeight = Math.min(sourceLinkHeight, targetLinkHeight);
 
-			// Verificar que no se pase del límite del nodo
 			const sourceY0 = sourceNode.linkY;
 			const sourceY1 = Math.min(sourceY0 + linkHeight, sourceNode.y1);
 			const actualSourceHeight = sourceY1 - sourceY0;
@@ -310,7 +327,6 @@
 			const targetY1 = Math.min(targetY0 + linkHeight, targetNode.y1);
 			const actualTargetHeight = targetY1 - targetY0;
 
-			// Actualizar la posición para el siguiente enlace
 			sourceNode.linkY = sourceY1;
 			targetNode.linkY = targetY1;
 
@@ -339,7 +355,6 @@
 
 		console.log(`Enlaces válidos: ${validLinks.length} de ${processedLinks.length}`);
 
-		// Dibujar enlaces
 		const linkGroup = g.append('g').attr('class', 'links');
 		const linkPaths = linkGroup
 			.selectAll('path')
@@ -354,7 +369,6 @@
 			.attr('stroke-opacity', 0.7)
 			.attr('fill', 'none');
 
-		// Dibujar nodos
 		const nodeGroup = g.append('g').attr('class', 'nodes');
 		const nodeRects = nodeGroup
 			.selectAll('rect')
@@ -368,7 +382,6 @@
 			.attr('stroke', '#fff')
 			.attr('stroke-width', 0.5);
 
-		// Dibujar etiquetas
 		const labelGroup = g.append('g').attr('class', 'labels');
 		const labels = labelGroup
 			.selectAll('text')
@@ -379,55 +392,10 @@
 			.attr('dy', '0.35em')
 			.attr('text-anchor', (d) => (d.type === 'source' ? 'end' : 'start'))
 			.style('font-family', 'Arial, sans-serif')
-			.style('font-size', '11px')
+			.style('font-size', '15px')
 			.style('fill', '#333')
 			.style('font-weight', '500')
-			.text((d) => `${d.name} (${d.displayValue})`);
-
-		// Tooltip
-		const tooltip = d3
-			.select('body')
-			.append('div')
-			.attr('class', 'sankey-tooltip')
-			.style('position', 'absolute')
-			.style('visibility', 'hidden')
-			.style('background', 'rgba(0, 0, 0, 0.9)')
-			.style('color', 'white')
-			.style('padding', '8px 12px')
-			.style('border-radius', '4px')
-			.style('font-size', '12px')
-			.style('pointer-events', 'none')
-			.style('z-index', '1000');
-
-		linkPaths
-			.on('mouseover', function (event, d) {
-				d3.select(this).attr('stroke-opacity', 0.9);
-				const sourceNode = processedNodes.get(d.source);
-				const targetNode = processedNodes.get(d.target);
-				tooltip
-					.style('visibility', 'visible')
-					.html(`${sourceNode.name} → ${targetNode.name}<br/>Valor: ${d.value}`);
-			})
-			.on('mousemove', function (event) {
-				tooltip.style('top', event.pageY - 10 + 'px').style('left', event.pageX + 10 + 'px');
-			})
-			.on('mouseout', function () {
-				d3.select(this).attr('stroke-opacity', 0.6);
-				tooltip.style('visibility', 'hidden');
-			});
-
-		nodeRects
-			.on('mouseover', function (event, d) {
-				tooltip
-					.style('visibility', 'visible')
-					.html(`${d.name}<br/>Tipo: ${d.type}<br/>Valor: ${d.displayValue}`);
-			})
-			.on('mousemove', function (event) {
-				tooltip.style('top', event.pageY - 10 + 'px').style('left', event.pageX + 10 + 'px');
-			})
-			.on('mouseout', function () {
-				tooltip.style('visibility', 'hidden');
-			});
+			.text((d) => `${d.name}`);
 	}
 
 	onMount(async () => {
@@ -442,6 +410,11 @@
 </script>
 
 <div class="sankey-container">
+	<div class="controls">
+		<button class="export-btn" on:click={exportAsSVG} disabled={!data}>
+			📥 Exportar como SVG
+		</button>
+	</div>
 	<svg bind:this={svgElement} />
 </div>
 
@@ -451,6 +424,22 @@
 		background: white;
 		padding: 20px;
 		font-family: Arial, sans-serif;
+	}
+
+	.controls {
+		margin-bottom: 20px;
+		text-align: center;
+	}
+
+	.export-btn {
+		color: black;
+		cursor: pointer;
+		font-size: 14px;
+	}
+
+	.export-btn:disabled {
+		background: #ccc;
+		cursor: not-allowed;
 	}
 
 	svg {
