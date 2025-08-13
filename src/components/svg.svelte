@@ -248,7 +248,7 @@
 		});
 
 		const nodeWidth = 15;
-		const nodePadding = 5;
+		const nodePadding = 15;
 		const sourceTotal = d3.sum(sourceNodes, (d) => d.value);
 		const targetTotal = d3.sum(targetNodes, (d) => d.value);
 
@@ -437,10 +437,10 @@
 			.attr('dy', '0.35em')
 			.attr('text-anchor', (d) => (d.type === 'source' ? 'end' : 'start'))
 			.style('font-family', 'Arial, sans-serif')
-			.style('font-size', '11px')
+			.style('font-size', '15px')
 			.style('fill', '#333')
 			.style('font-weight', '500')
-			.text((d) => `${d.name} (${d.displayValue})`);
+			.text((d) => `${d.name}`);
 
 		// Tooltip
 		const tooltip = d3
