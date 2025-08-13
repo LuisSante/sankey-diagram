@@ -1,0 +1,520 @@
+,Affiliation Country,Application Country,aff app count,Affiliation count,Application count
+0,Australia,Australia,2,7,31
+1,Australia,Austria,1,7,9
+2,Australia,Botswana,1,7,28
+3,Australia,Brasil,1,7,31
+4,Australia,Canada,1,7,33
+5,Australia,Chile,1,7,29
+6,Australia,China,5,7,116
+7,Australia,Croatia,1,7,28
+8,Australia,Czech republic,1,7,29
+9,Australia,Denmark,1,7,28
+10,Australia,Finland,1,7,29
+11,Australia,France,1,7,31
+12,Australia,Germany,1,7,31
+13,Australia,Ireland,1,7,28
+14,Australia,Israel,1,7,28
+15,Australia,Italy,1,7,31
+16,Australia,Japan,1,7,36
+17,Australia,Mexico,1,7,34
+18,Australia,Netherlands,1,7,31
+19,Australia,Poland,1,7,28
+20,Australia,Portugal,1,7,30
+21,Australia,Romania,1,7,28
+22,Australia,Russia,1,7,28
+23,Australia,Scotland,1,7,28
+24,Australia,Singapore,1,7,35
+25,Australia,Slovakia,1,7,28
+26,Australia,South africa,1,7,28
+27,Australia,Spain,1,7,29
+28,Australia,Sweden,1,7,29
+29,Australia,Thailand,1,7,28
+30,Australia,UK,1,7,48
+31,Australia,USA,2,7,66
+32,Australia,Ukraine,1,7,28
+33,Austria,Austria,1,1,9
+34,Austria,USA,1,1,66
+35,Bangladesh,Bangladesh,1,1,1
+36,Belgium,Belgium,1,1,1
+37,Brasil,Australia,2,6,31
+38,Brasil,Botswana,2,6,28
+39,Brasil,Brasil,4,6,31
+40,Brasil,Canada,2,6,33
+41,Brasil,Chile,2,6,29
+42,Brasil,China,2,6,116
+43,Brasil,Croatia,2,6,28
+44,Brasil,Czech republic,2,6,29
+45,Brasil,Denmark,2,6,28
+46,Brasil,Finland,2,6,29
+47,Brasil,France,2,6,31
+48,Brasil,Germany,2,6,31
+49,Brasil,Ireland,2,6,28
+50,Brasil,Israel,2,6,28
+51,Brasil,Italy,2,6,31
+52,Brasil,Japan,2,6,36
+53,Brasil,Mexico,2,6,34
+54,Brasil,Netherlands,2,6,31
+55,Brasil,Poland,2,6,28
+56,Brasil,Portugal,2,6,30
+57,Brasil,Romania,2,6,28
+58,Brasil,Russia,2,6,28
+59,Brasil,Scotland,2,6,28
+60,Brasil,Singapore,2,6,35
+61,Brasil,Slovakia,2,6,28
+62,Brasil,South africa,2,6,28
+63,Brasil,Spain,2,6,29
+64,Brasil,Sweden,2,6,29
+65,Brasil,Thailand,2,6,28
+66,Brasil,UK,3,6,48
+67,Brasil,USA,4,6,66
+68,Brasil,Ukraine,2,6,28
+69,Canada,Australia,1,7,31
+70,Canada,Austria,1,7,9
+71,Canada,Botswana,1,7,28
+72,Canada,Brasil,1,7,31
+73,Canada,Canada,3,7,33
+74,Canada,Chile,1,7,29
+75,Canada,China,1,7,116
+76,Canada,Croatia,1,7,28
+77,Canada,Czech republic,1,7,29
+78,Canada,Denmark,1,7,28
+79,Canada,Finland,1,7,29
+80,Canada,France,1,7,31
+81,Canada,Germany,1,7,31
+82,Canada,Ireland,1,7,28
+83,Canada,Israel,1,7,28
+84,Canada,Italy,1,7,31
+85,Canada,Japan,1,7,36
+86,Canada,Mexico,1,7,34
+87,Canada,Netherlands,1,7,31
+88,Canada,Poland,1,7,28
+89,Canada,Portugal,1,7,30
+90,Canada,Romania,1,7,28
+91,Canada,Russia,1,7,28
+92,Canada,Scotland,1,7,28
+93,Canada,Singapore,1,7,35
+94,Canada,Slovakia,1,7,28
+95,Canada,South africa,1,7,28
+96,Canada,Spain,1,7,29
+97,Canada,Sweden,1,7,29
+98,Canada,Thailand,1,7,28
+99,Canada,UK,3,7,48
+100,Canada,USA,4,7,66
+101,Canada,Ukraine,1,7,28
+102,Chile,Australia,1,3,31
+103,Chile,Austria,1,3,9
+104,Chile,Botswana,1,3,28
+105,Chile,Brasil,1,3,31
+106,Chile,Canada,1,3,33
+107,Chile,Chile,2,3,29
+108,Chile,China,1,3,116
+109,Chile,Croatia,1,3,28
+110,Chile,Czech republic,1,3,29
+111,Chile,Denmark,1,3,28
+112,Chile,Finland,1,3,29
+113,Chile,France,1,3,31
+114,Chile,Germany,1,3,31
+115,Chile,Ireland,1,3,28
+116,Chile,Israel,1,3,28
+117,Chile,Italy,1,3,31
+118,Chile,Japan,1,3,36
+119,Chile,Mexico,1,3,34
+120,Chile,Netherlands,1,3,31
+121,Chile,Poland,1,3,28
+122,Chile,Portugal,1,3,30
+123,Chile,Romania,1,3,28
+124,Chile,Russia,1,3,28
+125,Chile,Scotland,1,3,28
+126,Chile,Singapore,1,3,35
+127,Chile,Slovakia,1,3,28
+128,Chile,South africa,1,3,28
+129,Chile,Spain,1,3,29
+130,Chile,Sweden,1,3,29
+131,Chile,Thailand,1,3,28
+132,Chile,UK,1,3,48
+133,Chile,USA,2,3,66
+134,Chile,Ukraine,1,3,28
+135,China,Australia,15,107,31
+136,China,Austria,1,107,9
+137,China,Botswana,14,107,28
+138,China,Brasil,14,107,31
+139,China,Canada,15,107,33
+140,China,Chile,14,107,29
+141,China,China,97,107,116
+142,China,Croatia,14,107,28
+143,China,Czech republic,14,107,29
+144,China,Denmark,14,107,28
+145,China,Finland,14,107,29
+146,China,France,15,107,31
+147,China,Germany,14,107,31
+148,China,Ireland,14,107,28
+149,China,Israel,14,107,28
+150,China,Italy,14,107,31
+151,China,Japan,16,107,36
+152,China,Mexico,14,107,34
+153,China,Netherlands,16,107,31
+154,China,Poland,14,107,28
+155,China,Portugal,14,107,30
+156,China,Romania,14,107,28
+157,China,Russia,14,107,28
+158,China,Scotland,14,107,28
+159,China,Singapore,17,107,35
+160,China,Slovakia,14,107,28
+161,China,South africa,14,107,28
+162,China,South korea,1,107,5
+163,China,Spain,14,107,29
+164,China,Sweden,15,107,29
+165,China,Thailand,14,107,28
+166,China,UK,15,107,48
+167,China,USA,21,107,66
+168,China,Ukraine,14,107,28
+169,Colombia,Colombia,2,2,2
+170,Denmark,UK,1,1,48
+171,Finland,China,1,2,116
+172,Finland,Finland,1,2,29
+173,France,Australia,3,6,31
+174,France,Botswana,3,6,28
+175,France,Brasil,4,6,31
+176,France,Canada,4,6,33
+177,France,Chile,3,6,29
+178,France,China,3,6,116
+179,France,Croatia,3,6,28
+180,France,Czech republic,4,6,29
+181,France,Denmark,3,6,28
+182,France,Finland,3,6,29
+183,France,France,4,6,31
+184,France,Germany,3,6,31
+185,France,Ireland,3,6,28
+186,France,Israel,3,6,28
+187,France,Italy,4,6,31
+188,France,Japan,4,6,36
+189,France,Mexico,5,6,34
+190,France,Netherlands,3,6,31
+191,France,Poland,3,6,28
+192,France,Portugal,3,6,30
+193,France,Romania,3,6,28
+194,France,Russia,3,6,28
+195,France,Scotland,3,6,28
+196,France,Singapore,3,6,35
+197,France,Slovakia,3,6,28
+198,France,South africa,3,6,28
+199,France,Spain,4,6,29
+200,France,Sweden,3,6,29
+201,France,Thailand,3,6,28
+202,France,UK,4,6,48
+203,France,USA,4,6,66
+204,France,Ukraine,3,6,28
+205,Germany,China,4,5,116
+206,Germany,Germany,1,5,31
+207,Ghana,UK,1,1,48
+208,India,Australia,1,4,31
+209,India,Botswana,1,4,28
+210,India,Brasil,1,4,31
+211,India,Canada,1,4,33
+212,India,Chile,1,4,29
+213,India,China,1,4,116
+214,India,Croatia,1,4,28
+215,India,Czech republic,1,4,29
+216,India,Denmark,1,4,28
+217,India,Finland,1,4,29
+218,India,France,1,4,31
+219,India,Germany,1,4,31
+220,India,India,3,4,5
+221,India,Ireland,1,4,28
+222,India,Israel,1,4,28
+223,India,Italy,1,4,31
+224,India,Japan,1,4,36
+225,India,Mexico,1,4,34
+226,India,Netherlands,1,4,31
+227,India,Poland,1,4,28
+228,India,Portugal,1,4,30
+229,India,Romania,1,4,28
+230,India,Russia,1,4,28
+231,India,Scotland,1,4,28
+232,India,Singapore,1,4,35
+233,India,Slovakia,1,4,28
+234,India,South africa,1,4,28
+235,India,Spain,1,4,29
+236,India,Sweden,1,4,29
+237,India,Thailand,1,4,28
+238,India,UK,1,4,48
+239,India,USA,1,4,66
+240,India,Ukraine,1,4,28
+241,Italy,Australia,1,5,31
+242,Italy,Austria,1,5,9
+243,Italy,Botswana,1,5,28
+244,Italy,Brasil,1,5,31
+245,Italy,Canada,1,5,33
+246,Italy,Chile,1,5,29
+247,Italy,China,1,5,116
+248,Italy,Croatia,1,5,28
+249,Italy,Czech republic,1,5,29
+250,Italy,Denmark,1,5,28
+251,Italy,Finland,1,5,29
+252,Italy,France,1,5,31
+253,Italy,Germany,1,5,31
+254,Italy,Ireland,1,5,28
+255,Italy,Israel,1,5,28
+256,Italy,Italy,3,5,31
+257,Italy,Japan,1,5,36
+258,Italy,Mexico,1,5,34
+259,Italy,Netherlands,1,5,31
+260,Italy,Poland,1,5,28
+261,Italy,Portugal,1,5,30
+262,Italy,Romania,1,5,28
+263,Italy,Russia,1,5,28
+264,Italy,Scotland,1,5,28
+265,Italy,Singapore,1,5,35
+266,Italy,Slovakia,1,5,28
+267,Italy,South africa,1,5,28
+268,Italy,Spain,1,5,29
+269,Italy,Sweden,1,5,29
+270,Italy,Thailand,1,5,28
+271,Italy,UK,2,5,48
+272,Italy,USA,3,5,66
+273,Italy,Ukraine,1,5,28
+274,Japan,Australia,1,15,31
+275,Japan,Botswana,1,15,28
+276,Japan,Brasil,1,15,31
+277,Japan,Canada,1,15,33
+278,Japan,Chile,1,15,29
+279,Japan,China,7,15,116
+280,Japan,Croatia,1,15,28
+281,Japan,Czech republic,1,15,29
+282,Japan,Denmark,1,15,28
+283,Japan,Finland,1,15,29
+284,Japan,France,2,15,31
+285,Japan,Germany,2,15,31
+286,Japan,Ireland,1,15,28
+287,Japan,Israel,1,15,28
+288,Japan,Italy,1,15,31
+289,Japan,Japan,7,15,36
+290,Japan,Mexico,1,15,34
+291,Japan,Netherlands,2,15,31
+292,Japan,Poland,1,15,28
+293,Japan,Portugal,1,15,30
+294,Japan,Romania,1,15,28
+295,Japan,Russia,1,15,28
+296,Japan,Scotland,1,15,28
+297,Japan,Singapore,1,15,35
+298,Japan,Slovakia,1,15,28
+299,Japan,South africa,1,15,28
+300,Japan,Spain,1,15,29
+301,Japan,Sweden,1,15,29
+302,Japan,Thailand,1,15,28
+303,Japan,UK,2,15,48
+304,Japan,USA,3,15,66
+305,Japan,Ukraine,1,15,28
+306,Jordan,Jordan,1,1,1
+307,Mexico,Mexico,4,4,34
+308,Netherlands,Australia,2,5,31
+309,Netherlands,Botswana,2,5,28
+310,Netherlands,Brasil,2,5,31
+311,Netherlands,Canada,2,5,33
+312,Netherlands,Chile,2,5,29
+313,Netherlands,China,2,5,116
+314,Netherlands,Croatia,2,5,28
+315,Netherlands,Czech republic,2,5,29
+316,Netherlands,Denmark,2,5,28
+317,Netherlands,Finland,2,5,29
+318,Netherlands,France,2,5,31
+319,Netherlands,Germany,3,5,31
+320,Netherlands,Ireland,2,5,28
+321,Netherlands,Israel,2,5,28
+322,Netherlands,Italy,2,5,31
+323,Netherlands,Japan,2,5,36
+324,Netherlands,Mexico,2,5,34
+325,Netherlands,Netherlands,3,5,31
+326,Netherlands,Poland,2,5,28
+327,Netherlands,Portugal,2,5,30
+328,Netherlands,Romania,2,5,28
+329,Netherlands,Russia,2,5,28
+330,Netherlands,Scotland,2,5,28
+331,Netherlands,Singapore,2,5,35
+332,Netherlands,Slovakia,2,5,28
+333,Netherlands,South africa,2,5,28
+334,Netherlands,Spain,2,5,29
+335,Netherlands,Sweden,2,5,29
+336,Netherlands,Thailand,2,5,28
+337,Netherlands,UK,3,5,48
+338,Netherlands,USA,2,5,66
+339,Netherlands,Ukraine,2,5,28
+340,Peru,Australia,3,3,31
+341,Peru,Botswana,3,3,28
+342,Peru,Brasil,3,3,31
+343,Peru,Canada,3,3,33
+344,Peru,Chile,3,3,29
+345,Peru,China,3,3,116
+346,Peru,Croatia,3,3,28
+347,Peru,Czech republic,3,3,29
+348,Peru,Denmark,3,3,28
+349,Peru,Finland,3,3,29
+350,Peru,France,3,3,31
+351,Peru,Germany,3,3,31
+352,Peru,Ireland,3,3,28
+353,Peru,Israel,3,3,28
+354,Peru,Italy,3,3,31
+355,Peru,Japan,3,3,36
+356,Peru,Mexico,3,3,34
+357,Peru,Netherlands,3,3,31
+358,Peru,Poland,3,3,28
+359,Peru,Portugal,3,3,30
+360,Peru,Romania,3,3,28
+361,Peru,Russia,3,3,28
+362,Peru,Scotland,3,3,28
+363,Peru,Singapore,3,3,35
+364,Peru,Slovakia,3,3,28
+365,Peru,South africa,3,3,28
+366,Peru,Spain,3,3,29
+367,Peru,Sweden,3,3,29
+368,Peru,Thailand,3,3,28
+369,Peru,UK,3,3,48
+370,Peru,USA,3,3,66
+371,Peru,Ukraine,3,3,28
+372,Portugal,Portugal,2,3,30
+373,Portugal,UK,1,3,48
+374,Singapore,Australia,1,13,31
+375,Singapore,Botswana,1,13,28
+376,Singapore,Brasil,1,13,31
+377,Singapore,Canada,1,13,33
+378,Singapore,Chile,1,13,29
+379,Singapore,China,6,13,116
+380,Singapore,Croatia,1,13,28
+381,Singapore,Czech republic,1,13,29
+382,Singapore,Denmark,1,13,28
+383,Singapore,Finland,1,13,29
+384,Singapore,France,1,13,31
+385,Singapore,Germany,1,13,31
+386,Singapore,Ireland,1,13,28
+387,Singapore,Israel,1,13,28
+388,Singapore,Italy,1,13,31
+389,Singapore,Japan,1,13,36
+390,Singapore,Mexico,2,13,34
+391,Singapore,Netherlands,3,13,31
+392,Singapore,Poland,1,13,28
+393,Singapore,Portugal,1,13,30
+394,Singapore,Romania,1,13,28
+395,Singapore,Russia,1,13,28
+396,Singapore,Scotland,1,13,28
+397,Singapore,Singapore,7,13,35
+398,Singapore,Slovakia,1,13,28
+399,Singapore,South africa,1,13,28
+400,Singapore,Spain,1,13,29
+401,Singapore,Sweden,1,13,29
+402,Singapore,Thailand,1,13,28
+403,Singapore,UK,2,13,48
+404,Singapore,USA,6,13,66
+405,Singapore,Ukraine,1,13,28
+406,South korea,Australia,1,11,31
+407,South korea,Austria,2,11,9
+408,South korea,Botswana,1,11,28
+409,South korea,Brasil,1,11,31
+410,South korea,Canada,1,11,33
+411,South korea,Chile,1,11,29
+412,South korea,China,3,11,116
+413,South korea,Croatia,1,11,28
+414,South korea,Czech republic,1,11,29
+415,South korea,Denmark,1,11,28
+416,South korea,Finland,1,11,29
+417,South korea,France,1,11,31
+418,South korea,Germany,1,11,31
+419,South korea,Ireland,1,11,28
+420,South korea,Israel,1,11,28
+421,South korea,Italy,1,11,31
+422,South korea,Japan,1,11,36
+423,South korea,Mexico,1,11,34
+424,South korea,Netherlands,1,11,31
+425,South korea,Poland,1,11,28
+426,South korea,Portugal,1,11,30
+427,South korea,Romania,1,11,28
+428,South korea,Russia,1,11,28
+429,South korea,Scotland,1,11,28
+430,South korea,Singapore,1,11,35
+431,South korea,Slovakia,1,11,28
+432,South korea,South africa,1,11,28
+433,South korea,South korea,5,11,5
+434,South korea,Spain,1,11,29
+435,South korea,Sweden,1,11,29
+436,South korea,Thailand,1,11,28
+437,South korea,UK,1,11,48
+438,South korea,USA,4,11,66
+439,South korea,Ukraine,1,11,28
+440,Spain,UK,2,2,48
+441,Spain,USA,1,2,66
+442,Sweden,Sweden,1,1,29
+443,Switzerland,China,2,7,116
+444,Switzerland,Mexico,2,7,34
+445,Switzerland,Singapore,1,7,35
+446,Switzerland,Switzerland,1,7,1
+447,Switzerland,UK,3,7,48
+448,Switzerland,USA,1,7,66
+449,UK,Australia,3,26,31
+450,UK,Botswana,2,26,28
+451,UK,Brasil,2,26,31
+452,UK,Canada,3,26,33
+453,UK,Chile,2,26,29
+454,UK,China,13,26,116
+455,UK,Croatia,2,26,28
+456,UK,Czech republic,2,26,29
+457,UK,Denmark,2,26,28
+458,UK,Finland,2,26,29
+459,UK,France,2,26,31
+460,UK,Germany,2,26,31
+461,UK,Ireland,2,26,28
+462,UK,Israel,2,26,28
+463,UK,Italy,2,26,31
+464,UK,Japan,2,26,36
+465,UK,Mexico,2,26,34
+466,UK,Netherlands,2,26,31
+467,UK,New zealand,1,26,1
+468,UK,Poland,2,26,28
+469,UK,Portugal,2,26,30
+470,UK,Romania,2,26,28
+471,UK,Russia,2,26,28
+472,UK,Scotland,2,26,28
+473,UK,Singapore,2,26,35
+474,UK,Slovakia,2,26,28
+475,UK,South africa,2,26,28
+476,UK,Spain,2,26,29
+477,UK,Sweden,2,26,29
+478,UK,Thailand,2,26,28
+479,UK,UK,13,26,48
+480,UK,USA,5,26,66
+481,UK,Ukraine,2,26,28
+482,USA,Australia,4,52,31
+483,USA,Austria,6,52,9
+484,USA,Belgium,1,52,1
+485,USA,Botswana,4,52,28
+486,USA,Brasil,6,52,31
+487,USA,Canada,6,52,33
+488,USA,Chile,5,52,29
+489,USA,China,14,52,116
+490,USA,Croatia,4,52,28
+491,USA,Czech republic,5,52,29
+492,USA,Denmark,4,52,28
+493,USA,Finland,4,52,29
+494,USA,France,5,52,31
+495,USA,Germany,4,52,31
+496,USA,India,2,52,5
+497,USA,Ireland,4,52,28
+498,USA,Israel,4,52,28
+499,USA,Italy,6,52,31
+500,USA,Japan,5,52,36
+501,USA,Kenya,1,52,1
+502,USA,Mexico,7,52,34
+503,USA,Netherlands,5,52,31
+504,USA,Poland,4,52,28
+505,USA,Portugal,4,52,30
+506,USA,Romania,4,52,28
+507,USA,Russia,4,52,28
+508,USA,Scotland,4,52,28
+509,USA,Singapore,5,52,35
+510,USA,Slovakia,4,52,28
+511,USA,South africa,4,52,28
+512,USA,South korea,2,52,5
+513,USA,Spain,5,52,29
+514,USA,Sweden,5,52,29
+515,USA,Thailand,4,52,28
+516,USA,UK,10,52,48
+517,USA,USA,26,52,66
+518,USA,Ukraine,4,52,28

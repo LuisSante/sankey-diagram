@@ -33,10 +33,7 @@
 			document.body.removeChild(link);
 
 			URL.revokeObjectURL(url);
-
-			console.log('SVG exportado exitosamente');
 		} catch (error) {
-			console.error('Error al exportar SVG:', error);
 			alert('Error al exportar el SVG');
 		}
 	}
@@ -196,10 +193,6 @@
 				displayValue: n.inValue
 			}));
 
-		console.log(`Nodos activos fuente: ${sourceNodes.length}`);
-		console.log(`Nodos activos destino: ${targetNodes.length}`);
-		console.log(`Enlaces procesados: ${processedLinks.length}`);
-
 		sourceNodes.sort((a, b) => {
 			if (a.name === 'Others') return 1;
 			if (b.name === 'Others') return -1;
@@ -220,25 +213,41 @@
 		const sourceScale = (innerHeight - (sourceNodes.length - 1) * nodePadding) / sourceTotal;
 		const targetScale = (innerHeight - (targetNodes.length - 1) * nodePadding) / targetTotal;
 
-		let y = 0;
+		// ========== AQUÍ ESTÁ EL CAMBIO PRINCIPAL ==========
+		// Calcular alturas totales utilizadas
+		const sourceUsedHeight =
+			sourceNodes.reduce((sum, node) => sum + node.value * sourceScale, 0) +
+			(sourceNodes.length - 1) * nodePadding;
+		const targetUsedHeight =
+			targetNodes.reduce((sum, node) => sum + node.value * targetScale, 0) +
+			(targetNodes.length - 1) * nodePadding;
+
+		// Calcular offsets para centrar verticalmente
+		const sourceOffset = (innerHeight - sourceUsedHeight) / 2;
+		const targetOffset = (innerHeight - targetUsedHeight) / 2;
+
+		// Posicionar nodos fuente con offset (REEMPLAZA EL CÓDIGO ORIGINAL)
+		let sourceY = sourceOffset;
 		sourceNodes.forEach((node) => {
 			node.x0 = 0;
 			node.x1 = nodeWidth;
-			node.y0 = y;
-			node.y1 = y + node.value * sourceScale;
+			node.y0 = sourceY;
+			node.y1 = sourceY + node.value * sourceScale;
 			node.linkY = node.y0;
-			y = node.y1 + nodePadding;
+			sourceY = node.y1 + nodePadding;
 		});
 
-		y = 0;
+		// Posicionar nodos destino con offset (REEMPLAZA EL CÓDIGO ORIGINAL)
+		let targetY = targetOffset;
 		targetNodes.forEach((node) => {
 			node.x0 = innerWidth - nodeWidth;
 			node.x1 = innerWidth;
-			node.y0 = y;
-			node.y1 = y + node.value * targetScale;
+			node.y0 = targetY;
+			node.y1 = targetY + node.value * targetScale;
 			node.linkY = node.y0;
-			y = node.y1 + nodePadding;
+			targetY = node.y1 + nodePadding;
 		});
+		// ========== FIN DEL CAMBIO ==========
 
 		const allNodes = [...sourceNodes, ...targetNodes];
 
@@ -299,17 +308,9 @@
 			.domain(allCountries)
 			.range([...colors.slice(0, allCountries.length - 1), '#888888']); // Others en gris
 
-		console.log(`Países únicos: ${allCountries.length}`);
-		allCountries.forEach((country) => console.log(`- ${country}`));
-
 		function createLinkPath(link) {
 			const sourceNode = sourceNodes.find((n) => n.originalId === link.source);
 			const targetNode = targetNodes.find((n) => n.originalId === link.target);
-
-			if (!sourceNode || !targetNode) {
-				console.log(`No se encontró nodo para enlace: ${link.source} -> ${link.target}`);
-				return '';
-			}
 
 			const sourceNodeHeight = sourceNode.y1 - sourceNode.y0;
 			const targetNodeHeight = targetNode.y1 - targetNode.y0;
@@ -352,8 +353,6 @@
 			const targetExists = targetNodes.some((n) => n.originalId === link.target);
 			return sourceExists && targetExists;
 		});
-
-		console.log(`Enlaces válidos: ${validLinks.length} de ${processedLinks.length}`);
 
 		const linkGroup = g.append('g').attr('class', 'links');
 		const linkPaths = linkGroup
@@ -399,13 +398,9 @@
 	}
 
 	onMount(async () => {
-		try {
-			const response = await fetch('./sankey_data.json');
-			data = await response.json();
-			createSankey(data);
-		} catch (error) {
-			console.error('Error cargando los datos:', error);
-		}
+		const response = await fetch('./sankey_data.json');
+		data = await response.json();
+		createSankey(data);
 	});
 </script>
 

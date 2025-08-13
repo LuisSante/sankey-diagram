@@ -2,179 +2,267 @@
   "nodes": [
     {
       "id": 0,
-      "name": "Australia"
+      "name": "Australia",
+      "height_source": 7,
+      "height_target": 31
     },
     {
       "id": 1,
-      "name": "Austria"
+      "name": "Austria",
+      "height_source": 1,
+      "height_target": 9
     },
     {
       "id": 2,
-      "name": "Bangladesh"
+      "name": "Bangladesh",
+      "height_source": 1,
+      "height_target": 1
     },
     {
       "id": 3,
-      "name": "Belgium"
+      "name": "Belgium",
+      "height_source": 1,
+      "height_target": 1
     },
     {
       "id": 4,
-      "name": "Botswana"
+      "name": "Botswana",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 5,
-      "name": "Brasil"
+      "name": "Brasil",
+      "height_source": 6,
+      "height_target": 31
     },
     {
       "id": 6,
-      "name": "Canada"
+      "name": "Canada",
+      "height_source": 7,
+      "height_target": 33
     },
     {
       "id": 7,
-      "name": "Chile"
+      "name": "Chile",
+      "height_source": 3,
+      "height_target": 29
     },
     {
       "id": 8,
-      "name": "China"
+      "name": "China",
+      "height_source": 107,
+      "height_target": 116
     },
     {
       "id": 9,
-      "name": "Colombia"
+      "name": "Colombia",
+      "height_source": 2,
+      "height_target": 2
     },
     {
       "id": 10,
-      "name": "Croatia"
+      "name": "Croatia",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 11,
-      "name": "Czech republic"
+      "name": "Czech republic",
+      "height_source": 0,
+      "height_target": 29
     },
     {
       "id": 12,
-      "name": "Denmark"
+      "name": "Denmark",
+      "height_source": 1,
+      "height_target": 28
     },
     {
       "id": 13,
-      "name": "Finland"
+      "name": "Finland",
+      "height_source": 2,
+      "height_target": 29
     },
     {
       "id": 14,
-      "name": "France"
+      "name": "France",
+      "height_source": 6,
+      "height_target": 31
     },
     {
       "id": 15,
-      "name": "Germany"
+      "name": "Germany",
+      "height_source": 5,
+      "height_target": 31
     },
     {
       "id": 16,
-      "name": "Ghana"
+      "name": "Ghana",
+      "height_source": 1,
+      "height_target": 0
     },
     {
       "id": 17,
-      "name": "India"
+      "name": "India",
+      "height_source": 4,
+      "height_target": 5
     },
     {
       "id": 18,
-      "name": "Ireland"
+      "name": "Ireland",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 19,
-      "name": "Israel"
+      "name": "Israel",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 20,
-      "name": "Italy"
+      "name": "Italy",
+      "height_source": 5,
+      "height_target": 31
     },
     {
       "id": 21,
-      "name": "Japan"
+      "name": "Japan",
+      "height_source": 15,
+      "height_target": 36
     },
     {
       "id": 22,
-      "name": "Jordan"
+      "name": "Jordan",
+      "height_source": 1,
+      "height_target": 1
     },
     {
       "id": 23,
-      "name": "Kenya"
+      "name": "Kenya",
+      "height_source": 0,
+      "height_target": 1
     },
     {
       "id": 24,
-      "name": "Mexico"
+      "name": "Mexico",
+      "height_source": 4,
+      "height_target": 34
     },
     {
       "id": 25,
-      "name": "Netherlands"
+      "name": "Netherlands",
+      "height_source": 5,
+      "height_target": 31
     },
     {
       "id": 26,
-      "name": "New zealand"
+      "name": "New zealand",
+      "height_source": 0,
+      "height_target": 1
     },
     {
       "id": 27,
-      "name": "Peru"
+      "name": "Peru",
+      "height_source": 3,
+      "height_target": 0
     },
     {
       "id": 28,
-      "name": "Poland"
+      "name": "Poland",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 29,
-      "name": "Portugal"
+      "name": "Portugal",
+      "height_source": 3,
+      "height_target": 30
     },
     {
       "id": 30,
-      "name": "Romania"
+      "name": "Romania",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 31,
-      "name": "Russia"
+      "name": "Russia",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 32,
-      "name": "Scotland"
+      "name": "Scotland",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 33,
-      "name": "Singapore"
+      "name": "Singapore",
+      "height_source": 13,
+      "height_target": 35
     },
     {
       "id": 34,
-      "name": "Slovakia"
+      "name": "Slovakia",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 35,
-      "name": "South africa"
+      "name": "South africa",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 36,
-      "name": "South korea"
+      "name": "South korea",
+      "height_source": 11,
+      "height_target": 5
     },
     {
       "id": 37,
-      "name": "Spain"
+      "name": "Spain",
+      "height_source": 2,
+      "height_target": 29
     },
     {
       "id": 38,
-      "name": "Sweden"
+      "name": "Sweden",
+      "height_source": 1,
+      "height_target": 29
     },
     {
       "id": 39,
-      "name": "Switzerland"
+      "name": "Switzerland",
+      "height_source": 7,
+      "height_target": 1
     },
     {
       "id": 40,
-      "name": "Thailand"
+      "name": "Thailand",
+      "height_source": 0,
+      "height_target": 28
     },
     {
       "id": 41,
-      "name": "UK"
+      "name": "UK",
+      "height_source": 26,
+      "height_target": 48
     },
     {
       "id": 42,
-      "name": "USA"
+      "name": "USA",
+      "height_source": 52,
+      "height_target": 66
     },
     {
       "id": 43,
-      "name": "Ukraine"
+      "name": "Ukraine",
+      "height_source": 0,
+      "height_target": 28
     }
   ],
   "links": [
