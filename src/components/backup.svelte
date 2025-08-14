@@ -12,37 +12,16 @@
 		}
 
 		try {
-			// Clonar el SVG para no afectar el original
 			const svgClone = svgElement.cloneNode(true);
 
-			// Asegurar que el SVG tiene los atributos necesarios
 			svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 			svgClone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
 
-			// Agregar estilos CSS inline para que se mantengan en el SVG exportado
 			const styleElement = document.createElementNS('http://www.w3.org/2000/svg', 'style');
-			styleElement.textContent = `
-				.sankey-tooltip { display: none !important; }
-				text {
-					font-family: Arial, sans-serif;
-					font-size: 11px;
-					fill: #333;
-					font-weight: 500;
-				}
-				rect {
-					stroke: #fff;
-					stroke-width: 0.5px;
-				}
-				path {
-					fill: none;
-				}
-			`;
 			svgClone.insertBefore(styleElement, svgClone.firstChild);
 
-			// Convertir a string
 			const svgData = new XMLSerializer().serializeToString(svgClone);
 
-			// Crear blob y descargar
 			const blob = new Blob([svgData], { type: 'image/svg+xml' });
 			const url = URL.createObjectURL(blob);
 
@@ -53,12 +32,8 @@
 			link.click();
 			document.body.removeChild(link);
 
-			// Limpiar URL
 			URL.revokeObjectURL(url);
-
-			console.log('SVG exportado exitosamente');
 		} catch (error) {
-			console.error('Error al exportar SVG:', error);
 			alert('Error al exportar el SVG');
 		}
 	}
@@ -82,11 +57,9 @@
 
 		const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-		// Procesar datos y agrupar países con valores < 11 en "Others"
 		const processedNodes = new Map();
 		const processedLinks = [];
 
-		// Inicializar todos los nodos
 		data.nodes.forEach((node) => {
 			processedNodes.set(node.id, {
 				...node,
@@ -98,7 +71,6 @@
 			});
 		});
 
-		// Calcular valores totales por nodo
 		data.links.forEach((link) => {
 			const sourceNode = processedNodes.get(link.source);
 			const targetNode = processedNodes.get(link.target);
@@ -109,7 +81,6 @@
 			}
 		});
 
-		// Identificar países que van a "Others"
 		const othersSourceCountries = new Set();
 		const othersTargetCountries = new Set();
 
@@ -122,7 +93,6 @@
 			}
 		});
 
-		// Crear nodos Others
 		if (othersSourceCountries.size > 0) {
 			processedNodes.set('Others_source', {
 				id: 'Others_source',
@@ -147,22 +117,18 @@
 			});
 		}
 
-		// Procesar enlaces y agrupar en Others
 		data.links.forEach((link) => {
 			let sourceId = link.source;
 			let targetId = link.target;
 
-			// Si el source va a Others
 			if (othersSourceCountries.has(link.source)) {
 				sourceId = 'Others_source';
 			}
 
-			// Si el target va a Others
 			if (othersTargetCountries.has(link.target)) {
 				targetId = 'Others_target';
 			}
 
-			// Buscar si ya existe un enlace combinado
 			const existingLinkIndex = processedLinks.findIndex(
 				(l) => l.source === sourceId && l.target === targetId
 			);
@@ -178,7 +144,6 @@
 			}
 		});
 
-		// Recalcular valores después del agrupamiento
 		processedNodes.forEach((node) => {
 			node.outValue = 0;
 			node.inValue = 0;
@@ -196,7 +161,6 @@
 			}
 		});
 
-		// Filtrar nodos que no tienen flujos
 		const activeNodes = Array.from(processedNodes.values()).filter(
 			(node) => node.outValue > 0 || node.inValue > 0
 		);
@@ -207,7 +171,6 @@
 			node.totalValue = Math.max(node.outValue, node.inValue, 1);
 		});
 
-		// Crear nodos source y target separados
 		const sourceNodes = activeNodes
 			.filter((n) => n.outValue > 0)
 			.map((n) => ({
@@ -230,11 +193,6 @@
 				displayValue: n.inValue
 			}));
 
-		console.log(`Nodos activos fuente: ${sourceNodes.length}`);
-		console.log(`Nodos activos destino: ${targetNodes.length}`);
-		console.log(`Enlaces procesados: ${processedLinks.length}`);
-
-		// Ordenar con Others al final
 		sourceNodes.sort((a, b) => {
 			if (a.name === 'Others') return 1;
 			if (b.name === 'Others') return -1;
@@ -249,37 +207,69 @@
 
 		const nodeWidth = 15;
 		const nodePadding = 15;
+
+		// ========== CORRECCIÓN PRINCIPAL ==========
+		// Calcular la suma total de valores para ambos lados
 		const sourceTotal = d3.sum(sourceNodes, (d) => d.value);
 		const targetTotal = d3.sum(targetNodes, (d) => d.value);
 
-		const sourceScale = (innerHeight - (sourceNodes.length - 1) * nodePadding) / sourceTotal;
-		const targetScale = (innerHeight - (targetNodes.length - 1) * nodePadding) / targetTotal;
+		// Usar el total mayor para calcular una escala uniforme
+		const maxTotal = Math.max(sourceTotal, targetTotal);
 
-		// Posicionar nodos source
-		let y = 0;
+		// Calcular espacio disponible para nodos (descontando padding entre nodos)
+		const availableHeight =
+			innerHeight - Math.max(sourceNodes.length - 1, targetNodes.length - 1) * nodePadding;
+
+		// Escala uniforme para ambos lados
+		const scale = availableHeight / maxTotal;
+
+		// Posicionar nodos fuente
+		let currentY = 0;
 		sourceNodes.forEach((node) => {
 			node.x0 = 0;
 			node.x1 = nodeWidth;
-			node.y0 = y;
-			node.y1 = y + node.value * sourceScale;
+			node.y0 = currentY;
+			node.y1 = currentY + node.value * scale;
 			node.linkY = node.y0;
-			y = node.y1 + nodePadding;
+			currentY = node.y1 + nodePadding;
 		});
 
-		// Posicionar nodos target
-		y = 0;
+		// Calcular offset para centrar verticalmente los nodos fuente
+		const sourceUsedHeight = currentY - nodePadding; // Restar el último padding
+		const sourceOffset = (innerHeight - sourceUsedHeight) / 2;
+
+		// Aplicar offset a nodos fuente
+		sourceNodes.forEach((node) => {
+			node.y0 += sourceOffset;
+			node.y1 += sourceOffset;
+			node.linkY = node.y0;
+		});
+
+		// Posicionar nodos destino
+		currentY = 0;
 		targetNodes.forEach((node) => {
 			node.x0 = innerWidth - nodeWidth;
 			node.x1 = innerWidth;
-			node.y0 = y;
-			node.y1 = y + node.value * targetScale;
+			node.y0 = currentY;
+			node.y1 = currentY + node.value * scale;
 			node.linkY = node.y0;
-			y = node.y1 + nodePadding;
+			currentY = node.y1 + nodePadding;
 		});
+
+		// Calcular offset para centrar verticalmente los nodos destino
+		const targetUsedHeight = currentY - nodePadding; // Restar el último padding
+		const targetOffset = (innerHeight - targetUsedHeight) / 2;
+
+		// Aplicar offset a nodos destino
+		targetNodes.forEach((node) => {
+			node.y0 += targetOffset;
+			node.y1 += targetOffset;
+			node.linkY = node.y0;
+		});
+		// ========== FIN DE LA CORRECCIÓN ==========
 
 		const allNodes = [...sourceNodes, ...targetNodes];
 
-		// Crear escala de colores con Others al final en gris
 		const allCountries = [...new Set(activeNodes.map((d) => d.name))].sort();
 		const othersIndex = allCountries.indexOf('Others');
 		if (othersIndex > -1) {
@@ -337,29 +327,18 @@
 			.domain(allCountries)
 			.range([...colors.slice(0, allCountries.length - 1), '#888888']); // Others en gris
 
-		console.log(`Países únicos: ${allCountries.length}`);
-		allCountries.forEach((country) => console.log(`- ${country}`));
-
 		function createLinkPath(link) {
 			const sourceNode = sourceNodes.find((n) => n.originalId === link.source);
 			const targetNode = targetNodes.find((n) => n.originalId === link.target);
 
-			if (!sourceNode || !targetNode) {
-				console.log(`No se encontró nodo para enlace: ${link.source} -> ${link.target}`);
-				return '';
-			}
-
-			// Calcular altura del enlace proporcional al valor y al tamaño del nodo
 			const sourceNodeHeight = sourceNode.y1 - sourceNode.y0;
 			const targetNodeHeight = targetNode.y1 - targetNode.y0;
 
-			// La altura del enlace debe ser proporcional al valor dentro del nodo
 			const sourceLinkHeight = (link.value / sourceNode.displayValue) * sourceNodeHeight;
 			const targetLinkHeight = (link.value / targetNode.displayValue) * targetNodeHeight;
 
 			const linkHeight = Math.min(sourceLinkHeight, targetLinkHeight);
 
-			// Verificar que no se pase del límite del nodo
 			const sourceY0 = sourceNode.linkY;
 			const sourceY1 = Math.min(sourceY0 + linkHeight, sourceNode.y1);
 			const actualSourceHeight = sourceY1 - sourceY0;
@@ -368,7 +347,6 @@
 			const targetY1 = Math.min(targetY0 + linkHeight, targetNode.y1);
 			const actualTargetHeight = targetY1 - targetY0;
 
-			// Actualizar la posición para el siguiente enlace
 			sourceNode.linkY = sourceY1;
 			targetNode.linkY = targetY1;
 
@@ -395,9 +373,6 @@
 			return sourceExists && targetExists;
 		});
 
-		console.log(`Enlaces válidos: ${validLinks.length} de ${processedLinks.length}`);
-
-		// Dibujar enlaces
 		const linkGroup = g.append('g').attr('class', 'links');
 		const linkPaths = linkGroup
 			.selectAll('path')
@@ -412,7 +387,6 @@
 			.attr('stroke-opacity', 0.7)
 			.attr('fill', 'none');
 
-		// Dibujar nodos
 		const nodeGroup = g.append('g').attr('class', 'nodes');
 		const nodeRects = nodeGroup
 			.selectAll('rect')
@@ -426,7 +400,6 @@
 			.attr('stroke', '#fff')
 			.attr('stroke-width', 0.5);
 
-		// Dibujar etiquetas
 		const labelGroup = g.append('g').attr('class', 'labels');
 		const labels = labelGroup
 			.selectAll('text')
@@ -441,61 +414,12 @@
 			.style('fill', '#333')
 			.style('font-weight', '500')
 			.text((d) => `${d.name}`);
-
-		// Tooltip
-		const tooltip = d3
-			.select('body')
-			.append('div')
-			.attr('class', 'sankey-tooltip')
-			.style('position', 'absolute')
-			.style('visibility', 'hidden')
-			.style('background', 'rgba(0, 0, 0, 0.9)')
-			.style('color', 'white')
-			.style('padding', '8px 12px')
-			.style('border-radius', '4px')
-			.style('font-size', '12px')
-			.style('pointer-events', 'none')
-			.style('z-index', '1000');
-
-		linkPaths
-			.on('mouseover', function (event, d) {
-				d3.select(this).attr('stroke-opacity', 0.9);
-				const sourceNode = processedNodes.get(d.source);
-				const targetNode = processedNodes.get(d.target);
-				tooltip
-					.style('visibility', 'visible')
-					.html(`${sourceNode.name} → ${targetNode.name}<br/>Valor: ${d.value}`);
-			})
-			.on('mousemove', function (event) {
-				tooltip.style('top', event.pageY - 10 + 'px').style('left', event.pageX + 10 + 'px');
-			})
-			.on('mouseout', function () {
-				d3.select(this).attr('stroke-opacity', 0.6);
-				tooltip.style('visibility', 'hidden');
-			});
-
-		nodeRects
-			.on('mouseover', function (event, d) {
-				tooltip
-					.style('visibility', 'visible')
-					.html(`${d.name}<br/>Tipo: ${d.type}<br/>Valor: ${d.displayValue}`);
-			})
-			.on('mousemove', function (event) {
-				tooltip.style('top', event.pageY - 10 + 'px').style('left', event.pageX + 10 + 'px');
-			})
-			.on('mouseout', function () {
-				tooltip.style('visibility', 'hidden');
-			});
 	}
 
 	onMount(async () => {
-		try {
-			const response = await fetch('./sankey_data.json');
-			data = await response.json();
-			createSankey(data);
-		} catch (error) {
-			console.error('Error cargando los datos:', error);
-		}
+		const response = await fetch('./sankey_data.json');
+		data = await response.json();
+		createSankey(data);
 	});
 </script>
 
@@ -522,19 +446,9 @@
 	}
 
 	.export-btn {
-		background: #007bff;
-		color: white;
-		border: none;
-		padding: 10px 20px;
-		border-radius: 5px;
+		color: black;
 		cursor: pointer;
 		font-size: 14px;
-		font-weight: 500;
-		transition: background-color 0.2s;
-	}
-
-	.export-btn:hover:not(:disabled) {
-		background: #0056b3;
 	}
 
 	.export-btn:disabled {
