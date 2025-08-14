@@ -207,47 +207,66 @@
 
 		const nodeWidth = 15;
 		const nodePadding = 15;
+
+		// ========== CORRECCIÓN PRINCIPAL ==========
+		// Calcular la suma total de valores para ambos lados
 		const sourceTotal = d3.sum(sourceNodes, (d) => d.value);
 		const targetTotal = d3.sum(targetNodes, (d) => d.value);
 
-		const sourceScale = (innerHeight - (sourceNodes.length - 1) * nodePadding) / sourceTotal;
-		const targetScale = (innerHeight - (targetNodes.length - 1) * nodePadding) / targetTotal;
+		// Usar el total mayor para calcular una escala uniforme
+		const maxTotal = Math.max(sourceTotal, targetTotal);
 
-		// ========== AQUÍ ESTÁ EL CAMBIO PRINCIPAL ==========
-		// Calcular alturas totales utilizadas
-		const sourceUsedHeight =
-			sourceNodes.reduce((sum, node) => sum + node.value * sourceScale, 0) +
-			(sourceNodes.length - 1) * nodePadding;
-		const targetUsedHeight =
-			targetNodes.reduce((sum, node) => sum + node.value * targetScale, 0) +
-			(targetNodes.length - 1) * nodePadding;
+		// Calcular espacio disponible para nodos (descontando padding entre nodos)
+		const availableHeight =
+			innerHeight - Math.max(sourceNodes.length - 1, targetNodes.length - 1) * nodePadding;
 
-		// Calcular offsets para centrar verticalmente
-		const sourceOffset = (innerHeight - sourceUsedHeight) / 2;
-		const targetOffset = (innerHeight - targetUsedHeight) / 2;
+		// Escala uniforme para ambos lados
+		const scale = availableHeight / maxTotal;
 
-		// Posicionar nodos fuente con offset (REEMPLAZA EL CÓDIGO ORIGINAL)
-		let sourceY = sourceOffset;
+		// Posicionar nodos fuente
+		let currentY = 0;
 		sourceNodes.forEach((node) => {
 			node.x0 = 0;
 			node.x1 = nodeWidth;
-			node.y0 = sourceY;
-			node.y1 = sourceY + node.value * sourceScale;
+			node.y0 = currentY;
+			node.y1 = currentY + node.value * scale;
 			node.linkY = node.y0;
-			sourceY = node.y1 + nodePadding;
+			currentY = node.y1 + nodePadding;
 		});
 
-		// Posicionar nodos destino con offset (REEMPLAZA EL CÓDIGO ORIGINAL)
-		let targetY = targetOffset;
+		// Calcular offset para centrar verticalmente los nodos fuente
+		const sourceUsedHeight = currentY - nodePadding; // Restar el último padding
+		const sourceOffset = (innerHeight - sourceUsedHeight) / 2;
+
+		// Aplicar offset a nodos fuente
+		sourceNodes.forEach((node) => {
+			node.y0 += sourceOffset;
+			node.y1 += sourceOffset;
+			node.linkY = node.y0;
+		});
+
+		// Posicionar nodos destino
+		currentY = 0;
 		targetNodes.forEach((node) => {
 			node.x0 = innerWidth - nodeWidth;
 			node.x1 = innerWidth;
-			node.y0 = targetY;
-			node.y1 = targetY + node.value * targetScale;
+			node.y0 = currentY;
+			node.y1 = currentY + node.value * scale;
 			node.linkY = node.y0;
-			targetY = node.y1 + nodePadding;
+			currentY = node.y1 + nodePadding;
 		});
-		// ========== FIN DEL CAMBIO ==========
+
+		// Calcular offset para centrar verticalmente los nodos destino
+		const targetUsedHeight = currentY - nodePadding; // Restar el último padding
+		const targetOffset = (innerHeight - targetUsedHeight) / 2;
+
+		// Aplicar offset a nodos destino
+		targetNodes.forEach((node) => {
+			node.y0 += targetOffset;
+			node.y1 += targetOffset;
+			node.linkY = node.y0;
+		});
+		// ========== FIN DE LA CORRECCIÓN ==========
 
 		const allNodes = [...sourceNodes, ...targetNodes];
 
