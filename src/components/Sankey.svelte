@@ -57,10 +57,29 @@
 
 		const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
+		// Orden específico de países
+		const countryOrder = [
+			'China',
+			'USA',
+			'UK',
+			'Japan',
+			'Singapore',
+			'South korea',
+			'Australia',
+			'Canada',
+			'Brasil',
+			'France',
+			'Italy',
+			'Netherlands',
+			'India',
+			'Chile',
+			'Peru',
+			'Others'
+		];
+
 		const processedNodes = new Map();
 		const processedLinks = [];
 
-		// Crear mapa de nodos con información adicional
 		data.nodes.forEach((node) => {
 			processedNodes.set(node.id, {
 				...node,
@@ -68,10 +87,7 @@
 				targetLinks: [],
 				outValue: 0,
 				inValue: 0,
-				totalValue: 0,
-				// Usar las alturas personalizadas del JSON
-				customHeightSource: node.height_source || 0,
-				customHeightTarget: node.height_target || 0
+				totalValue: 0
 			});
 		});
 
@@ -88,7 +104,6 @@
 		const othersSourceCountries = new Set();
 		const othersTargetCountries = new Set();
 
-		// Identificar países para agrupar en "Others" basado en valores de flujo
 		processedNodes.forEach((node, id) => {
 			if (node.outValue > 0 && node.outValue < 11) {
 				othersSourceCountries.add(id);
@@ -98,14 +113,7 @@
 			}
 		});
 
-		// Crear nodos "Others" si es necesario
 		if (othersSourceCountries.size > 0) {
-			let totalHeightSource = 0;
-			othersSourceCountries.forEach((id) => {
-				const node = processedNodes.get(id);
-				totalHeightSource += node.customHeightSource;
-			});
-
 			processedNodes.set('Others_source', {
 				id: 'Others_source',
 				name: 'Others',
@@ -113,19 +121,11 @@
 				targetLinks: [],
 				outValue: 0,
 				inValue: 0,
-				totalValue: 0,
-				customHeightSource: totalHeightSource,
-				customHeightTarget: 0
+				totalValue: 0
 			});
 		}
 
 		if (othersTargetCountries.size > 0) {
-			let totalHeightTarget = 0;
-			othersTargetCountries.forEach((id) => {
-				const node = processedNodes.get(id);
-				totalHeightTarget += node.customHeightTarget;
-			});
-
 			processedNodes.set('Others_target', {
 				id: 'Others_target',
 				name: 'Others',
@@ -133,13 +133,10 @@
 				targetLinks: [],
 				outValue: 0,
 				inValue: 0,
-				totalValue: 0,
-				customHeightSource: 0,
-				customHeightTarget: totalHeightTarget
+				totalValue: 0
 			});
 		}
 
-		// Procesar enlaces agregando los que van a "Others"
 		data.links.forEach((link) => {
 			let sourceId = link.source;
 			let targetId = link.target;
@@ -167,7 +164,6 @@
 			}
 		});
 
-		// Recalcular valores de salida y entrada
 		processedNodes.forEach((node) => {
 			node.outValue = 0;
 			node.inValue = 0;
@@ -185,7 +181,6 @@
 			}
 		});
 
-		// Filtrar nodos activos
 		const activeNodes = Array.from(processedNodes.values()).filter(
 			(node) => node.outValue > 0 || node.inValue > 0
 		);
@@ -196,7 +191,12 @@
 			node.totalValue = Math.max(node.outValue, node.inValue, 1);
 		});
 
-		// Crear nodos de origen y destino usando alturas personalizadas
+		// Función para obtener el índice de orden de un país
+		function getCountryOrderIndex(countryName) {
+			const index = countryOrder.indexOf(countryName);
+			return index === -1 ? countryOrder.length : index;
+		}
+
 		const sourceNodes = activeNodes
 			.filter((n) => n.outValue > 0)
 			.map((n) => ({
@@ -204,10 +204,8 @@
 				id: n.id + '_source_display',
 				originalId: n.id,
 				type: 'source',
-				// Usar altura personalizada en lugar del valor calculado
-				value: Math.max(n.customHeightSource, 1),
-				displayValue: n.outValue,
-				customHeight: n.customHeightSource
+				value: Math.max(n.outValue, 1),
+				displayValue: n.outValue
 			}));
 
 		const targetNodes = activeNodes
@@ -217,29 +215,24 @@
 				id: n.id + '_target_display',
 				originalId: n.id,
 				type: 'target',
-				// Usar altura personalizada en lugar del valor calculado
-				value: Math.max(n.customHeightTarget, 1),
-				displayValue: n.inValue,
-				customHeight: n.customHeightTarget
+				value: Math.max(n.inValue, 1),
+				displayValue: n.inValue
 			}));
 
-		// Ordenar nodos
+		// Ordenar según el orden específico
 		sourceNodes.sort((a, b) => {
-			if (a.name === 'Others') return 1;
-			if (b.name === 'Others') return -1;
-			return b.customHeight - a.customHeight; // Ordenar por altura personalizada
+			return getCountryOrderIndex(a.name) - getCountryOrderIndex(b.name);
 		});
 
 		targetNodes.sort((a, b) => {
-			if (a.name === 'Others') return 1;
-			if (b.name === 'Others') return -1;
-			return b.customHeight - a.customHeight; // Ordenar por altura personalizada
+			return getCountryOrderIndex(a.name) - getCountryOrderIndex(b.name);
 		});
 
 		const nodeWidth = 15;
 		const nodePadding = 15;
 
-		// Calcular la suma total de alturas personalizadas
+		// ========== CORRECCIÓN PRINCIPAL ==========
+		// Calcular la suma total de valores para ambos lados
 		const sourceTotal = d3.sum(sourceNodes, (d) => d.value);
 		const targetTotal = d3.sum(targetNodes, (d) => d.value);
 
@@ -250,22 +243,22 @@
 		const availableHeight =
 			innerHeight - Math.max(sourceNodes.length - 1, targetNodes.length - 1) * nodePadding;
 
-		// Escala uniforme basada en las alturas personalizadas
+		// Escala uniforme para ambos lados
 		const scale = availableHeight / maxTotal;
 
-		// Posicionar nodos fuente usando alturas personalizadas
+		// Posicionar nodos fuente
 		let currentY = 0;
 		sourceNodes.forEach((node) => {
 			node.x0 = 0;
 			node.x1 = nodeWidth;
 			node.y0 = currentY;
-			node.y1 = currentY + node.value * scale; // Usar altura personalizada escalada
+			node.y1 = currentY + node.value * scale;
 			node.linkY = node.y0;
 			currentY = node.y1 + nodePadding;
 		});
 
 		// Calcular offset para centrar verticalmente los nodos fuente
-		const sourceUsedHeight = currentY - nodePadding;
+		const sourceUsedHeight = currentY - nodePadding; // Restar el último padding
 		const sourceOffset = (innerHeight - sourceUsedHeight) / 2;
 
 		// Aplicar offset a nodos fuente
@@ -275,19 +268,19 @@
 			node.linkY = node.y0;
 		});
 
-		// Posicionar nodos destino usando alturas personalizadas
+		// Posicionar nodos destino
 		currentY = 0;
 		targetNodes.forEach((node) => {
 			node.x0 = innerWidth - nodeWidth;
 			node.x1 = innerWidth;
 			node.y0 = currentY;
-			node.y1 = currentY + node.value * scale; // Usar altura personalizada escalada
+			node.y1 = currentY + node.value * scale;
 			node.linkY = node.y0;
 			currentY = node.y1 + nodePadding;
 		});
 
 		// Calcular offset para centrar verticalmente los nodos destino
-		const targetUsedHeight = currentY - nodePadding;
+		const targetUsedHeight = currentY - nodePadding; // Restar el último padding
 		const targetOffset = (innerHeight - targetUsedHeight) / 2;
 
 		// Aplicar offset a nodos destino
@@ -296,17 +289,11 @@
 			node.y1 += targetOffset;
 			node.linkY = node.y0;
 		});
+		// ========== FIN DE LA CORRECCIÓN ==========
 
 		const allNodes = [...sourceNodes, ...targetNodes];
 
-		// Configurar colores
-		const allCountries = [...new Set(activeNodes.map((d) => d.name))].sort();
-		const othersIndex = allCountries.indexOf('Others');
-		if (othersIndex > -1) {
-			allCountries.splice(othersIndex, 1);
-			allCountries.push('Others');
-		}
-
+		// Usar el orden específico para los colores
 		const colors = [
 			'#1f77b4',
 			'#ff7f0e',
@@ -323,41 +310,11 @@
 			'#98df8a',
 			'#ff9896',
 			'#c5b0d5',
-			'#c49c94',
-			'#f7b6d3',
-			'#c7c7c7',
-			'#dbdb8d',
-			'#9edae5',
-			'#ff6b6b',
-			'#4ecdc4',
-			'#45b7d1',
-			'#96ceb4',
-			'#feca57',
-			'#ff9ff3',
-			'#54a0ff',
-			'#5f27cd',
-			'#00d2d3',
-			'#ff9f43',
-			'#10ac84',
-			'#ee5a24',
-			'#0984e3',
-			'#a29bfe',
-			'#fd79a8',
-			'#fdcb6e',
-			'#6c5ce7',
-			'#fab1a0',
-			'#00b894',
-			'#e84393',
-			'#0984e3',
-			'#74b9ff'
+			'#888888' // Others en gris
 		];
 
-		const colorScale = d3
-			.scaleOrdinal()
-			.domain(allCountries)
-			.range([...colors.slice(0, allCountries.length - 1), '#888888']);
+		const colorScale = d3.scaleOrdinal().domain(countryOrder).range(colors);
 
-		// Función para crear paths de enlaces
 		function createLinkPath(link) {
 			const sourceNode = sourceNodes.find((n) => n.originalId === link.source);
 			const targetNode = targetNodes.find((n) => n.originalId === link.target);
@@ -365,7 +322,6 @@
 			const sourceNodeHeight = sourceNode.y1 - sourceNode.y0;
 			const targetNodeHeight = targetNode.y1 - targetNode.y0;
 
-			// Proporcional a los valores de flujo, no a las alturas personalizadas
 			const sourceLinkHeight = (link.value / sourceNode.displayValue) * sourceNodeHeight;
 			const targetLinkHeight = (link.value / targetNode.displayValue) * targetNodeHeight;
 
@@ -399,14 +355,12 @@
 			return `M${x0},${y0}C${x2},${y0} ${x3},${y1} ${x1},${y1}`;
 		}
 
-		// Filtrar enlaces válidos
 		const validLinks = processedLinks.filter((link) => {
 			const sourceExists = sourceNodes.some((n) => n.originalId === link.source);
 			const targetExists = targetNodes.some((n) => n.originalId === link.target);
 			return sourceExists && targetExists;
 		});
 
-		// Dibujar enlaces
 		const linkGroup = g.append('g').attr('class', 'links');
 		const linkPaths = linkGroup
 			.selectAll('path')
@@ -421,7 +375,6 @@
 			.attr('stroke-opacity', 0.7)
 			.attr('fill', 'none');
 
-		// Dibujar nodos
 		const nodeGroup = g.append('g').attr('class', 'nodes');
 		const nodeRects = nodeGroup
 			.selectAll('rect')
@@ -435,7 +388,6 @@
 			.attr('stroke', '#fff')
 			.attr('stroke-width', 0.5);
 
-		// Dibujar etiquetas
 		const labelGroup = g.append('g').attr('class', 'labels');
 		const labels = labelGroup
 			.selectAll('text')
